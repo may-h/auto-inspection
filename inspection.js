@@ -1,6 +1,6 @@
 const Excel = require("exceljs");
 const shell = require("./excute.js");
-const inspection_list = require("./config/inspection/config");
+const inspection_list = require("./config/inspection/config").modules;
 const names = require("./names.json");
 
 const workbook = new Excel.Workbook();
@@ -55,7 +55,7 @@ const setDefaul = (row) => {
         pattern: "solid",
         fgColor: { argb: "FFD3D3D3" }, //Dimgray
       };
-      
+
       worksheet.getColumn("opinion").fill = {
         type: "pattern",
         pattern: "solid",
