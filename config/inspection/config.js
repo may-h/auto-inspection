@@ -1,8 +1,6 @@
 const approot = require('app-root-path').path;
 const config = require(`${approot}/config/config.json`);
 
-console.log(config)
-
 exports.modules =  {
     "CPU" : [
         {
@@ -12,7 +10,7 @@ exports.modules =  {
         },
         {
             "name" : "Load Average 확인",
-            "command" : "cat /proc/loadavg | awk '{printf $1\" \"$2\" \"$3\"\n\"}'",
+            "command" : "cat /proc/loadavg | awk '{printf \"$1\" \"$2\" \"$3\"}'",
             "checkPoint" : "User APP의  CPU 사용률을 확인하여 비정상/정상 유무를 판단한다."
         }
     ],

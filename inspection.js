@@ -1,7 +1,9 @@
 const Excel = require("exceljs");
 const shell = require("./excute.js");
 const inspection_list = require("./config/inspection/config").modules;
+// const inspection_list = require("./commands.json");
 const names = require("./names.json");
+console.log(inspection_list["CPU"]);
 
 const workbook = new Excel.Workbook();
 const worksheet = workbook.addWorksheet("Inspection");
@@ -35,7 +37,7 @@ const setDefaul = (row) => {
       await putCategoryRow(names[category]);
       const commands = inspection_list[category];
       for (command of commands) {
-        if(command.path) await shell.cd()
+        if(command.path) await shell.cd(command.path);
         command.response = command.response || (await shell.exec(command.command));
         const newRow = await worksheet.addRow(command);
         console.log(newRow.number);
@@ -66,7 +68,7 @@ const setDefaul = (row) => {
 const saveFile = async () => {
     await work();
     await addLastStyle();
-    await workbook.xlsx.writeFile("inspection.xlsx");
+    await workbook.xlsx.writeFile("hello.xlsx");
     console.log("done");
   };
   
