@@ -1,0 +1,33 @@
+[
+    {
+    "title": "특이사항",
+    "bgColor": "FFD3D3D3",
+    "rowCount": "2",
+    "mergeCells": "A:F"
+  },
+  {
+    "title": "고객의견",
+    "bgColor": "FFD3D3D3",
+    "rowCount": "2",
+    "mergeCells": "A:F"
+  },
+  {
+    "title":
+      "위와 같은 시스템 정밀점검을 실시하였음을 확인 합니다.  \n\n     년     월      일",
+    "bgColor": "FFFFFFFF",
+    "rowCount": "1",
+    "mergeCells": "A:F"
+  },
+  {
+    "title": "고객사 담당자:       (인)",
+    "bgColor": "FFFFFFFF",
+    "rowCount": "1",
+    "mergeCells": "A:D",
+    "subColumn" : {
+        "title": "점검자 :      (인)",
+        "bgColor": "FFFFFFFF",
+        "rowCount": "1",
+        "mergeCells": "E:F"
+    }
+  }
+]
