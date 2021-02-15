@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "chalk": "^4.1.0",
+    "commander": "^7.0.0",
     "exceljs": "^4.2.0",
+    "inquirer": "^7.3.3",
     "shelljs": "^0.8.4"
   }
 }

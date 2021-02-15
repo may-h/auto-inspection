@@ -68,7 +68,7 @@ const setDefaul = (row) => {
 const saveFile = async () => {
     await work();
     await addLastStyle();
-    await workbook.xlsx.writeFile("hello.xlsx");
+    await workbook.xlsx.writeFile("./inspection.xlsx");
     console.log("done");
   };
   
