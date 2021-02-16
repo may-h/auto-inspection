@@ -56,10 +56,15 @@ module.exports = async (processObj) => {
         await putCategoryRow(names[category]);
         const commands = inspection_list[category];
         for (command of commands) {
-            if(command.path) await shell.cd(command.path);
+            if(command.path) {
+                let result = await shell.cd(command.path);
+                if(result) {
+                    command.response = `no directory : ${command.path}`;
+                }
+            };
             command.response = command.response || (await shell.exec(command.command));
             const newRow = await worksheet.addRow(command);
-            console.log(newRow.number);
+            // console.log(newRow.number);
             await setDefaul(newRow);
         }
     };

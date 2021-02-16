@@ -8,7 +8,11 @@ const exec = async (command) => {
 };
 
 const cd = async(path) => {
-  await shell.cd(path);
+  const response = await shell.cd(path);
+  if (response.code !== 0 || response == "") {
+      return false;
+  }
+  return true;
 }
 
 

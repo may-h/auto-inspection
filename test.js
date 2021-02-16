@@ -9,14 +9,23 @@ const exec = async (command) => {
 };
 
 const cd = async(path) => {
-  await shell.cd(path);
+    const response = await shell.cd(path);
+    console.log(response)
+    if (response.code !== 0 || response == "") {
+        return false;
+    }
+    return true;
 }
 
-const command = "lscpu | grep 'CPU(s):' | grep -v NUMA | awk '{printf $2}'";
-
 const work = async() => {
-    const result = await exec(command);
-    console.log('res -> ', result);
+    let result = await cd("/Users/may-han/study/coding_test")
+    if(result) {
+        await exec("pwd");
+    } else {
+        console.log("no directory")
+
+    };
+    
 }
 
 work();

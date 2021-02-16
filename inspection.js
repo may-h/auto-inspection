@@ -33,7 +33,8 @@ const setDefaul = (row) => {
   
   const work = async () => {
     //["CPU", "SERVICE_STATUS", "DISK_STATUS", "LOGS"]
-    for (category of Object.keys(inspection_list)) {
+    // for (category of Object.keys(inspection_list)) {
+      let category = "CPU"
       await putCategoryRow(names[category]);
       const commands = inspection_list[category];
       for (command of commands) {
@@ -43,7 +44,7 @@ const setDefaul = (row) => {
         console.log(newRow.number);
         await setDefaul(newRow);
       }
-    }
+    // }
   };
 
 
