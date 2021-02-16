@@ -35,7 +35,6 @@ exports.modules =  {
             "command" : "./console list ",
             "response" : "직접 확인하세요.",
             "checkPoint" : "OpenQuery SE 서비스 활성화 여부를 확인한다.",
-            "path" : `${config.OPENQUERY_PATH}/bin`
         }
     ],
     "DISK_STATUS" : [
@@ -48,7 +47,6 @@ exports.modules =  {
             "name" : "Elasticsearch 색인 데이터 용량 확인",
             "command" : "du -h --max-depth=1",
             "checkPoint" : "색인 데이터의 전체 용량을 확인하여 Disk Full를 사전에 방지한다.",
-            "path" : `${config.ELASTICSEARCH_DATA_PATH}`
 
         },
         {
