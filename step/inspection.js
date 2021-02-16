@@ -1,10 +1,12 @@
 const shell = require("../excute.js");
 const inspection_list = require("../config/inspection/config").modules;
 const names = require("../names.json");
+const chalk = require('chalk');
 
 
 module.exports = async (processObj) => {
-    console.log(`Step : ${processObj.step}, selected Type : ${processObj.type}`);
+    console.log(chalk.blue(`[Step 3. Inspection Start : ${processObj.type}] `));
+
     let worksheet = processObj.worksheet;
 
     worksheet.columns = [

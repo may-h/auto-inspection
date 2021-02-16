@@ -43,18 +43,26 @@ program.option('-s, --start').action(async () => {
       },
     ]);
 
-    if (type === 'Search Engine') {
-      console.log('your choice is ' + type);
-      proceed = (await test(type)) || false;
-    } else if (type === 'Chatbot Engine') {
-      console.log('your choice is ' + type);
-      proceed = (await test(type)) || false;
-    } else if (type === 'Recommendation Engine') {
-      console.log('your choice is ' + type);
-      proceed = (await test(type)) || false;
-    } else if (type === '[Exit]') {
-      checkProcessExit('exit');
+
+    switch(type) {
+      case 'Search Engine' : 
+       proceed = (await test('search')) || false; break; 
+      case 'Chatbot Engine' : 
+       proceed = (await test('chatbot')) || false; break; 
+      case 'Recommendation Engine' : 
+        proceed = (await test('recommendation')) || false; break;
+      default : checkProcessExit('exit');
     }
+    
+    // if (type === 'Search Engine') {
+    //   proceed = (await test('search')) || false;
+    // } else if (type === 'Chatbot Engine') {
+    //   proceed = (await test('chatbot')) || false;
+    // } else if (type === 'Recommendation Engine') {
+    //   proceed = (await test('recommendation')) || false;
+    // } else if (type === '[Exit]') {
+    //   checkProcessExit('exit');
+    // }
   }
 });
 

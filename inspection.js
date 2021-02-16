@@ -38,7 +38,7 @@ const setDefaul = (row) => {
       const commands = inspection_list[category];
       for (command of commands) {
         if(command.path) await shell.cd(command.path);
-        command.response = command.response || (await shell.exec(command.command));
+        command.response = command.response || (await shell.exec(command.command));z
         const newRow = await worksheet.addRow(command);
         console.log(newRow.number);
         await setDefaul(newRow);

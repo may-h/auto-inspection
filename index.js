@@ -1,5 +1,4 @@
 const checkConfig = require('./step/checkConfig');
-const checkConnection = require('./step/checkConnection');
 const generateHeader = require('./step/generateHeader');
 const inspection = require('./step/inspection');
 const generateFooter = require('./step/generateFooter');
@@ -7,9 +6,8 @@ const Excel = require("exceljs");
 const config = require("./config/footer/config.json");
 
 const stepList = [
-    checkConfig, // Step 0 - list에서 Domain을 선택하고 Connection Test.
-    checkConnection, // Step 1 - Domian 설정하기.
-    generateHeader, // Step 2 - Run Test Chat Flow & Create Output file
+    checkConfig, 
+    generateHeader, 
     inspection, 
     generateFooter
   ];

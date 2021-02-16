@@ -1,7 +1,11 @@
+const chalk = require('chalk');
+
+
 //ADD FOOTER 
 const addStyle = (type, newRow, bgColor) => {
+
     switch (type) {
-        case "footer":
+      case "footer":
         newRow.alignment = {
             vertical: "middle",
             horizontal: "center",
@@ -25,10 +29,8 @@ const addStyle = (type, newRow, bgColor) => {
 
 
 module.exports = async (processObj) => {
-    console.log(`Step : ${processObj.step}, selected Type : ${processObj.type}`);
+  console.log(chalk.blue(`[Step 4. Generate Footer : ${processObj.type}]`),);
     let worksheet = processObj.worksheet;
-
-
       const addFooterRow = async ({ title, bgColor, rowCount, mergeCells, subColumn }) => {
         let { number } = await worksheet.addRow([title]);
         let merge = mergeCells ? `${mergeCells.split(":")[0] + number}:${mergeCells.split(":")[1] + number}`: `A${number}`;
@@ -65,7 +67,6 @@ module.exports = async (processObj) => {
       };
 
     for (value of processObj.config) {
-        console.log('yes!')
         await addFooterRow(value);
     }
 
