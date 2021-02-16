@@ -62,7 +62,7 @@ module.exports = async (processObj) => {
                     command.response = `no directory : ${command.path}`;
                 }
             };
-            command.response = command.response || (await shell.exec(command.command));
+            command.response = command.response || (await shell.exec(command.command,  {silent:true}));
             const newRow = await worksheet.addRow(command);
             // console.log(newRow.number);
             await setDefaul(newRow);

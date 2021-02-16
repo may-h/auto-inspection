@@ -2,24 +2,27 @@ const checkConfig = require('./step/checkConfig');
 const generateHeader = require('./step/generateHeader');
 const inspection = require('./step/inspection');
 const generateFooter = require('./step/generateFooter');
+const saveFile = require('./step/saveFile');
 const Excel = require("exceljs");
 const config = require("./config/footer/config.json");
+
 
 const stepList = [
     checkConfig, 
     generateHeader, 
     inspection, 
-    generateFooter
+    generateFooter,
+    saveFile
   ];
 
 const createWorkbook = async (type) => {
   return new Excel.Workbook();
 }
 
-const saveFile = async (workbook) => {
-  await workbook.xlsx.writeFile("test.xlsx");
-  console.log('saved.')
-}
+// const saveFile = async (workbook) => {
+//   await workbook.xlsx.writeFile("test.xlsx");
+//   console.log('saved.')
+// }
 
 
 module.exports = async (type) => {
@@ -28,30 +31,17 @@ module.exports = async (type) => {
 
   let processObj = {
     config,
+    workbook, 
     worksheet,
     type,
     proceed: true, 				// step을 앞으로 진행할지 여부(true면 순차 진행).
     step: 0, 							// 진행할 step.
-    cfDomainId: '', 			// Config에서 사용된 Domain ID.
-    setDomainId: '', 			// 선택한 Domain ID.
-    esClient: {}, 				// elasticsearch server client.
-    teanaApi: {}, 				// Teana Api.
-    trDataSet: {					// Tr Data Set
-      intentSet: [],
-      senResult: [],
-      sentenceMap: new Map(),
-      chatflowSet: [],
-    },
-    cfTarget: [], 				// 테스트를 수행할 chatflow를 지정할 경우 사용.
-    parallelCnt: 10, 			// 병렬 수행할 sentence 개수.
-    separateMulti: false,	// MULTI-INTENT를 출력파일에서 따로 분리된 시트로 보기 위한 옵션.
   };
 
   while (processObj.step > -1) {
-    console.log('inside while :', processObj.step)
+    // console.log('inside while :', processObj.step+1)
     // 실행시킬 step.
     let stepProcess = stepList[processObj.step];
-
     // step 실행.
     await stepProcess(processObj);
 
@@ -68,7 +58,7 @@ module.exports = async (type) => {
   }
 
   console.log('All Process Is Done. Let Me Save File');
-  await saveFile(workbook);
+  // await saveFile(workbook);
   console.log('done');
 
 };
