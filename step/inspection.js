@@ -58,6 +58,7 @@ module.exports = async (processObj) => {
         for (command of commands) {
             if(command.path) {
                 let result = await shell.cd(command.path);
+                console.log("cd result -> ", result);
                 if(!result) {
                     command.response = `no directory : ${command.path}`;
                 }
