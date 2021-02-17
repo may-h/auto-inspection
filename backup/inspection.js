@@ -1,8 +1,8 @@
 const Excel = require("exceljs");
-const shell = require("./excute.js");
-const inspection_list = require("./config/inspection/config").modules;
+const shell = require("../excute.js");
+const inspection_list = require("../config/inspection/config").modules;
 // const inspection_list = require("./commands.json");
-const names = require("./names.json");
+const names = require("../names.json");
 console.log(inspection_list["CPU"]);
 
 const workbook = new Excel.Workbook();

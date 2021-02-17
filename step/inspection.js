@@ -1,5 +1,5 @@
 const shell = require("../excute.js");
-const inspection_list = require("../config/inspection/config").modules;
+const inspection_list = require("../config/inspection/config");
 const names = require("../names.json");
 const chalk = require('chalk');
 
@@ -58,7 +58,7 @@ module.exports = async (processObj) => {
         for (command of commands) {
             if(command.path) {
                 let result = await shell.cd(command.path);
-                if(result) {
+                if(!result) {
                     command.response = `no directory : ${command.path}`;
                 }
             };

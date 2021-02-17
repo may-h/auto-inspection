@@ -1,5 +1,5 @@
 const Excel = require("exceljs");
-const config = require("./config/footer/config.json");
+const config = require("../config/footer/config.json");
 
 const workbook = new Excel.Workbook();
 const worksheet = workbook.addWorksheet("Inspection");

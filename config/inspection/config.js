@@ -1,7 +1,7 @@
 const approot = require('app-root-path').path;
 const config = require(`${approot}/config/config.json`);
 
-exports.modules =  {
+module.exports =  {
     "CPU" : [
         {
             "name" : "Cpu core 수 점검",
@@ -10,7 +10,7 @@ exports.modules =  {
         },
         {
             "name" : "Load Average 확인",
-            "command" : "cat /proc/loadavg | awk '{printf \"$1\" \"$2\" \"$3\"}'",
+            "command" : "cat /proc/loadavg | awk '{printf $1\" \"$2\" \"$3}'",
             "checkPoint" : "User APP의  CPU 사용률을 확인하여 비정상/정상 유무를 판단한다."
         }
     ],
@@ -35,6 +35,7 @@ exports.modules =  {
             "command" : "./console list ",
             "response" : "직접 확인하세요.",
             "checkPoint" : "OpenQuery SE 서비스 활성화 여부를 확인한다.",
+            "path" : `${config["OPENQUERY_PATH"]}`
         }
     ],
     "DISK_STATUS" : [
@@ -47,7 +48,7 @@ exports.modules =  {
             "name" : "Elasticsearch 색인 데이터 용량 확인",
             "command" : "du -h --max-depth=1",
             "checkPoint" : "색인 데이터의 전체 용량을 확인하여 Disk Full를 사전에 방지한다.",
-
+            "path" : `${config["ELASTICSEARCH_DATA_PATH"]}`
         },
         {
             "name" : "시스템 메모리 확인",

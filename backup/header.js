@@ -1,7 +1,7 @@
 const Excel = require("exceljs");
-const exec = require("./excute.js").module;
-const inspection_list = require("./commands.json");
-const names = require("./names.json");
+const exec = require("../excute.js").module;
+const inspection_list = require("../commands.json");
+const names = require("../names.json");
 
 const workbook = new Excel.Workbook();
 const worksheet = workbook.addWorksheet("Inspection");
