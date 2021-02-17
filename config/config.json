@@ -1,5 +1,5 @@
 {
-    "ELASTICSEARCH_DATA_PATH" : "/home/sop/elastic/elasticsearch-6.5.4",
-    "ELASTICSEARCH_ROOT_PATH" : "/home/sop/elastic/elasticsearch-6.5.4",
-    "OPENQUERY_PATH" : "/home/sop/openquery-management-console-2.4.6"
+    "ELASTICSEARCH_DATA_PATH" : "/home/sop/elastic/elasticsearch-6.5.4/",
+    "ELASTICSEARCH_ROOT_PATH" : "/home/sop/elastic/elasticsearch-6.5.4/",
+    "OPENQUERY_PATH" : "/home/sop/openquery-management-console-2.4.6/"
 }
