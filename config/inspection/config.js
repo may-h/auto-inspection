@@ -33,7 +33,6 @@ module.exports =  {
         {
             "name" : "OpenQuery 상태 확인 ",
             "command" : "./console list ",
-            "response" : "직접 확인하세요.",
             "checkPoint" : "OpenQuery SE 서비스 활성화 여부를 확인한다.",
             "path" : `${config["OPENQUERY_PATH"]}bin/`
         }
