@@ -5,7 +5,7 @@ const chalk = require('chalk');
 
 
 module.exports = async (processObj) => {
-    console.log(chalk.blue(`[Step 3. Inspection Start : ${processObj.type}] `));
+    console.log(chalk.blue(`[Step ${processObj.step+1}. Inspection Start : ${processObj.type}] `));
 
     let worksheet = processObj.worksheet;
 
@@ -58,7 +58,6 @@ module.exports = async (processObj) => {
         for (command of commands) {
             if(command.path) {
                 let result = await shell.cd(command.path);
-                console.log("cd result -> ", result);
                 if(!result) {
                     command.response = `no directory : ${command.path}`;
                 }

@@ -2,7 +2,7 @@ const headerConfig = require("../config/header/config.json");
 const chalk = require('chalk');
 
 module.exports = async (processObj) => {
-    console.log(chalk.blue(`[Step 2. Generate Header : ${processObj.type}] `));
+    console.log(chalk.blue(`[Step ${processObj.step+1}. Generate Header : ${processObj.type}] `));
 
     let worksheet = processObj.worksheet;
 
@@ -22,7 +22,7 @@ module.exports = async (processObj) => {
           if(typeof headerConfig[v] == 'object') {
             Object.keys(headerConfig[v]).map(title => {
               rows.push([v, title, headerConfig[v][title]]);
-              console.log([v, title, headerConfig[v][title]])
+              // console.log([v, title, headerConfig[v][title]])
             })
           } else {
             rows.push([v, headerConfig[v]]);

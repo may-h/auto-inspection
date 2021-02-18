@@ -4,7 +4,6 @@ const config = require("../config/header/config.json");
 
 
 module.exports = async (processObj) => {
-    console.log(chalk.blue(`Step : ${processObj.step}, selected Type : ${processObj.type}`));
     try {
       Object.keys(config).map(v => {
         if(typeof v == 'object') {}
@@ -14,7 +13,7 @@ module.exports = async (processObj) => {
         let { choice } = await inquirer.prompt([
             {
               type: 'confirm',
-              message: chalk.blue(`[Step 1. Check Config : ${processObj.type}] : Above config is correct ? `),
+              message: chalk.blue(`[Step ${processObj.step+1}. Check Config : ${processObj.type}] : Above config is correct ? `),
               name: 'choice',
             },
           ]);

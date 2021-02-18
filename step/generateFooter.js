@@ -29,7 +29,7 @@ const addStyle = (type, newRow, bgColor) => {
 
 
 module.exports = async (processObj) => {
-  console.log(chalk.blue(`[Step 4. Generate Footer : ${processObj.type}]`),);
+  console.log(chalk.blue(`[Step ${processObj.step+1}. Generate Footer : ${processObj.type}]`),);
     let worksheet = processObj.worksheet;
       const addFooterRow = async ({ title, bgColor, rowCount, mergeCells, subColumn }) => {
         let { number } = await worksheet.addRow([title]);

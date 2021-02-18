@@ -1,4 +1,5 @@
 const checkConfig = require('./step/checkConfig');
+const selectForm = require('./step/selectForm');
 const generateHeader = require('./step/generateHeader');
 const inspection = require('./step/inspection');
 const generateFooter = require('./step/generateFooter');
@@ -8,7 +9,8 @@ const config = require("./config/footer/config.json");
 
 
 const stepList = [
-    checkConfig, 
+    checkConfig,
+    selectForm, 
     generateHeader, 
     inspection, 
     generateFooter,
@@ -30,12 +32,13 @@ module.exports = async (type) => {
   let worksheet = await workbook.addWorksheet(`Inspection-${type}`);
 
   let processObj = {
-    config,
-    workbook, 
-    worksheet,
-    type,
-    proceed: true, 				// step을 앞으로 진행할지 여부(true면 순차 진행).
-    step: 0, 							// 진행할 step.
+    config,              // config.
+    workbook,            // xlxs workbook. 
+    worksheet,           // xlxs worksheet. 
+    type,                // 점검 종류 (search, chatbot, recommendation).
+    format : "",         // 저장 형태(json, xlxs);
+    proceed: true, 			 // step을 앞으로 진행할지 여부(true면 순차 진행).
+    step: 0, 						 // 진행할 step.
   };
 
   while (processObj.step > -1) {

@@ -4,7 +4,7 @@ const approot = require('app-root-path').path;
 const moment = require('moment');
 
 module.exports = async (processObj) => {
-  console.log(chalk.blue(`[Step 5. Saving Inspection File ]`));
+  console.log(chalk.blue(`[Step ${processObj.step+1}. Saving Inspection File ]`));
     try {
         let { filename } = await inquirer.prompt([
             {
@@ -16,7 +16,7 @@ module.exports = async (processObj) => {
           ]);
 
           await processObj.workbook.xlsx.writeFile(`${approot}/output/${filename}.xlsx`);
-          console.log('saved.')
+          // console.log('saved.')
     } catch(err) {
         console.log(chalk.red(`\n ERROR :  ${err}\n`));
         process.exit(1);
