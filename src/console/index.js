@@ -9,9 +9,14 @@ module.exports = async (inspection_result) => {
         const commands = inspection_result[category];
         console.log(chalk.blue(`[${category}]`));
         for (command of commands) {
-            console.log(chalk.yellow(`├ 항목 : ${command.name}`));
-            console.log(chalk.yellow(`├ 명령어 : ${command.command}`));
-            console.log(chalk.yellow(`└ 출력내용 : ${command.response}\n`));
+            console.log(chalk.green(`   ├ 항목 : ${command.name}`));
+            console.log(chalk.green(`   ├ 명령어 : ${command.command}`));
+
+            if(command.response.includes('Error')) {
+                console.log(chalk.red(` └ 출력내용 : ${command.response}\n`));
+            } else {
+                console.log(chalk.green(`   └ 출력내용 : ${command.response}\n`));
+            }
         }
       };
 };
