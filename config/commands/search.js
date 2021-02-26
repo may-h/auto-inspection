@@ -1,5 +1,8 @@
-{
-    "CPU" : [
+const approot = require('app-root-path').path;
+const config = require(`${approot}/config/config.json`);
+
+module.exports =  {
+    "CPU 상태 점검" : [
         {
             "name" : "Cpu core 수 점검",
             "command" : "lscpu | grep 'CPU(s):' | grep -v NUMA | awk '{printf $2}'",
@@ -7,11 +10,11 @@
         },
         {
             "name" : "Load Average 확인",
-            "command" : "cat /proc/loadavg | awk '{printf $1\" \"$2\" \"$3\"\n\"}'",
+            "command" : "cat /proc/loadavg | awk '{printf $1\" \"$2\" \"$3}'",
             "checkPoint" : "User APP의  CPU 사용률을 확인하여 비정상/정상 유무를 판단한다."
         }
     ],
-    "SERVICE_STATUS" : [
+    "Service 상태 점검" : [
         {
             "name" : "Elasticsearch 상태 확인",
             "command" : "ps -ef | grep elasticsearch | grep -v 'grep'",
@@ -30,12 +33,11 @@
         {
             "name" : "OpenQuery 상태 확인 ",
             "command" : "./console list ",
-            "response" : "직접 확인하세요.",
             "checkPoint" : "OpenQuery SE 서비스 활성화 여부를 확인한다.",
-            "path" : "/home/sop/openquery-management-console-2.4.6/bin"
+            "path" : `${config["OPENQUERY_PATH"]}bin/`
         }
     ],
-    "DISK_STATUS" : [
+    "Disk 상태 점검" : [
         {
             "name" : "시스템 디스크 용량 확인",
             "command" : "df -h",
@@ -45,7 +47,7 @@
             "name" : "Elasticsearch 색인 데이터 용량 확인",
             "command" : "du -h --max-depth=1",
             "checkPoint" : "색인 데이터의 전체 용량을 확인하여 Disk Full를 사전에 방지한다.",
-            "path" : "/home/sop/elastic/elasticsearch-6.5.4"
+            "path" : `${config["ELASTICSEARCH_DATA_PATH"]}`
         },
         {
             "name" : "시스템 메모리 확인",
@@ -53,7 +55,7 @@
             "checkPoint" : "사용 가능한 메모리 용량을 확인하여 Out Of Memory Error를 사전에 방지한다."
         }
     ],
-    "LOGS" : [
+    "Log 상태 점검" : [
         {
             "name" : "Elasticsearch log",
             "command" : "zcat *.log.gz | grep ERROR",

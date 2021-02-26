@@ -1,4 +1,4 @@
-const shell = require("../excute.js");
+const shell = require("../utils/excute.js");
 const inspection_list = require("../config/inspection/config");
 const names = require("../names.json");
 const chalk = require('chalk');
