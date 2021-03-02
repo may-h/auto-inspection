@@ -11,7 +11,7 @@ module.exports =  {
         {
             "name" : "Load Average 확인",
             "command" : "cat /proc/loadavg | awk '{printf $1\" \"$2\" \"$3}'",
-            "checkPoint" : "User APP의  CPU 사용률을 확인하여 비정상/정상 유무를 판단한다."
+            "checkPoint" : "CPU 사용률을 확인하여 비정상/정상 유무를 판단한다."
         }
     ],
     "Service 상태 점검" : [
@@ -26,16 +26,26 @@ module.exports =  {
             "checkPoint" : "Elasticsearch Cluster 상태를 확인한다."
         },
         {
+            "name" : "NLU 상태 확인 ",
+            "command" : "ps -ef | grep nlu",
+            "checkPoint" : "Teana NLU 활성화 여부를 확인한다.",
+        },
+        {
+            "name" : "챗봇 서비스 상태 확인 ",
+            "command" : "pm2 list",
+            "checkPoint" : "Teana 챗봇 서비스 활성화 여부를 확인한다.",
+        },
+        {
+            "name" : "Redis 상태 확인 ",
+            "command" : "ps -ef | grep redis",
+            "checkPoint" : "Redis 활성화 여부를 확인한다.",
+        },
+        {
             "name" : "데이터 색인 상태 확인",
             "command" : `curl localhost:${config["ELASTICSEARCH_PORT"]}/_cat/indices?s=i:desc`,
             "checkPoint" : "색인된 인덱스 상태를 확인한다."
         },
-        {
-            "name" : "OpenQuery 상태 확인 ",
-            "command" : "./console list ",
-            "checkPoint" : "OpenQuery SE 서비스 활성화 여부를 확인한다.",
-            "path" : `${config["OPENQUERY_PATH"]}bin/`
-        }
+
     ],
     "Disk 상태 점검" : [
         {
@@ -60,19 +70,25 @@ module.exports =  {
             "name" : "Elasticsearch log",
             "command" : "zcat *.log.gz | grep ERROR",
             "response" : "로그를 직접 확인해주세요.",
-            "checkPoint" : "Elasticsearch Log를 확인하여 ERROR가 발생했는지 확인한다"
+            "checkPoint" : "Elasticsearch Log를 확인한다"
         },
         {
             "name" : "수집기 log",
             "command" : "cat *.log | grep ERROR",
             "response" : "로그를 직접 확인해주세요.",
-            "checkPoint" : "'수집기 log를 확인하여 ERROR가 발생했는지 확인한다. "
+            "checkPoint" : "'수집기 log를 확인한다. "
         },
         {
-            "name" : "openquery log ",
-            "command" : "./console logs",
+            "name" : "Teana NLU log ",
+            "command" : "cat *.log | grep ERROR",
             "response" : "로그를 직접 확인해주세요.",
-            "checkPoint" : "Openquery Log를 확인하여 ERROR가 발생했는지 확인한다"
+            "checkPoint" : "Teana NLU Log를 확인한다"
+        },
+        {
+            "name" : "Teana chatbot log ",
+            "command" : "cat *.log | grep ERROR",
+            "response" : "로그를 직접 확인해주세요.",
+            "checkPoint" : "Teana chatbot Log를 확인한다"
         }
     ]
 }
