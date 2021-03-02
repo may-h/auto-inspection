@@ -12,7 +12,7 @@ module.exports = async (inspection_result) => {
             console.log(chalk.green(`   ├ 항목 : ${command.name}`));
             console.log(chalk.green(`   ├ 명령어 : ${command.command}`));
 
-            if(command.response.includes('Error')) {
+            if(command.response.includes('ERROR')) {
                 console.log(chalk.red(` └ 출력내용 : ${command.response}\n`));
             } else {
                 console.log(chalk.green(`   └ 출력내용 : ${command.response}\n`));
