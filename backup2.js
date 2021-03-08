@@ -1,24 +1,17 @@
 const utils = require("../../utils");
-const inquirer = require("inquirer");
-const common = require("./util/common.js");
-const xlsx = require("./util/xlsx");
+const common = require("./utils/common.js");
+const xlsx = require("./utils/xlsx");
+const config = require('./config');
 
 const approot = require("app-root-path").path;
 
 module.exports = async (inspection_result) => {
   //workbook, worksheet 생성
-  let workbook = await common.createWorkbook();
+  let workbook = await xlsx.createWorkbook();
   let worksheet = await workbook.addWorksheet(`Inspection`);
 
   // 컬럼 추가 (필수)
-  worksheet.columns = [
-    { header: "세부 점검 항목", key: "name", width: 20 },
-    { header: "명령어", key: "command", width: 20 },
-    { header: "출력 내용", key: "response", width: 70 },
-    { header: "CHECK POINT", key: "checkPoint", width: 20 },
-    { header: "점검 결과", key: "result", width: 10 },
-    { header: "점검 내용", key: "opinion", width: 10 },
-  ];
+  worksheet.columns = config.columns_setting;
 
   // header 스타일 및 컬럼 추가.
   let headerStyled = (key, value, newRow, rowNum) => {
@@ -80,12 +73,6 @@ module.exports = async (inspection_result) => {
     }
   };
 
-  // body의 디폴트 스타일 추가.
-  const setDefaul = (row) => {
-    xlsx.setBorderLine(worksheet, row);
-    xlsx.setRowAlign(worksheet, row, "left");
-  };
-
   // body의 카테고리 행 스타일 추가.
   const putCategoryRow = async (name) => {
     const newRow = await worksheet.addRow({ name });
@@ -111,15 +98,8 @@ module.exports = async (inspection_result) => {
     xlsx.setRowAlign(worksheet, worksheet.getRow(1), "center"); //정렬.
 
     //header값 입력 받기.
-    let header_result = await common.getInquireList([
-      "고객명",
-      "시스템명",
-      "제품명",
-      "라이센스",
-      "IP",
-      "시스템OS",
-      "설치위치",
-    ]);
+    let header_inquire_list = config.header_inquire_list;
+    let header_result = await common.getInquireList(header_inquire_list);
 
     // 입력된 header 정보가 맞는지 확인 질문.
     let isCorrect = await common.ynChoice(`입력한 내용이 맞습니까? \n${JSON.stringify(header_result,  null, 4)}`);
@@ -135,15 +115,9 @@ module.exports = async (inspection_result) => {
 
   //================== 2. body (inspection result) ==================//
 
-  worksheet.addRow({}); //시작 전 빈행 삽입.
-  let newRow = worksheet.addRow([
-    "세부 점검 항목",
-    "명령어",
-    "출력 내용",
-    "CHECK POINT",
-    "점검 결과",
-    "점검 내용",
-  ]);
+  xlsx.addRow(worksheet, {});//시작 전 빈행 삽입.
+  // worksheet.addRow({}); //시작 전 빈행 삽입.
+  let newRow = worksheet.addRow(config.columns_title);
   xlsx.setRowAlign(worksheet, newRow, "center"); //정렬.
 
 
@@ -155,7 +129,10 @@ module.exports = async (inspection_result) => {
       command.result = "-";
       command.opinion = "-";
       const newRow = await worksheet.addRow(command);
-      await setDefaul(newRow);
+
+      xlsx.setBorderLine(worksheet, newRow);
+      xlsx.setRowAlign(worksheet, newRow, "left");
+      // await setDefaul(newRow);
     }
   }
 
@@ -164,123 +141,59 @@ module.exports = async (inspection_result) => {
   // Footer을 추가할 것인지 질문.
   let ynFooter = await common.ynChoice("파일에 Footer을 추가하시겠습니까?");
 
-  //ADD FOOTER
-  const addStyle = (newRow, bgColor) => {
-    xlsx.setRowAlign(worksheet, newRow, "center"); //정렬.
-    xlsx.setHeight(newRow, 20);
-    xlsx.setRowFill(worksheet, newRow, bgColor);
-    xlsx.setBorderLine(worksheet, newRow); // border 설정.
-  };
-
   if (ynFooter) {
-    const addFooterRow = async ({
-      title,
-      bgColor,
-      rowCount,
-      mergeCells,
-      subColumn,
-    }) => {
-      let { number } = await worksheet.addRow([title]);
-      let merge = mergeCells
-        ? `${mergeCells.split(":")[0] + number}:${
-            mergeCells.split(":")[1] + number
-          }`
-        : `A${number}`;
 
-      const newRow = worksheet.getRow(merge.split(":")[0]);
+    let footer_config = config.footer_config;
+
+    for (value of footer_config) {
+      let mergeCells = value.mergeCells;
+      let bgColor = value.bgColor;
+      let rowCount = value.rowCount;
+      let subColumn = value.subColumn;
+
+      let newRow = await worksheet.addRow([value.title]);
+      let number = newRow.number;
+
+      //Merge Cells
+      if (mergeCells !== undefined) xlsx.mergeCells(worksheet, `${mergeCells.split(":")[0] + number}`, `${mergeCells.split(":")[1] + number}`);
 
 
       //Add Style
-      await addStyle(newRow, bgColor);
-
-      //Merge Cells
-      if (mergeCells !== undefined) worksheet.mergeCells(merge);
+      xlsx.setRowAlign(worksheet, newRow, "center"); //정렬.
+      xlsx.setHeight(newRow, 20); // 높이 설정. 
+      xlsx.setFill(worksheet, `A${number}`, bgColor); // 셀 색 설정. 
+      xlsx.setBorderLine(worksheet, newRow); // border 설정.
 
       // 옆칸에 subColumn이 들어갈 때
       if (subColumn !== undefined) {
-        const sub = worksheet.getRow(
+        const subRow = worksheet.getRow(
           `${subColumn.mergeCells.split(":")[0] + number}`
         );
-        await addStyle(sub, subColumn.bgColor);
-        await worksheet.mergeCells(
-          `${subColumn.mergeCells.split(":")[0] + number}:${
-            subColumn.mergeCells.split(":")[1] + number
-          }`
-        );
+
+        xlsx.setRowAlign(worksheet, subRow, "center"); //정렬.
+        xlsx.setHeight(subRow, 40);
+        xlsx.setRowFill(worksheet, subRow, bgColor);
+        xlsx.setBorderLine(worksheet, subRow); // border 설정.
+
+
+        xlsx.mergeCells(worksheet, `${subColumn.mergeCells.split(":")[0] + number}`, `${subColumn.mergeCells.split(":")[1] + number}`);
+
       }
+
 
       //빈 row 삽입.
       if (rowCount > 1) {
         for (let i = 1; i < rowCount; i++) {
           const newRow = await worksheet.addRow([]);
-          await worksheet.mergeCells(
-            `${mergeCells.split(":")[0] + newRow.number}:${
-              mergeCells.split(":")[1] + newRow.number
-            }`
-          );
-          newRow.eachCell(function (cell, colNumber) {
-            worksheet.getCell(cell._address).border = {
-              top: { style: "thin" },
-              left: { style: "thin" },
-              bottom: { style: "thin" },
-              right: { style: "thin" },
-            };
-
-            worksheet.getCell(cell._address).alignment = {
-              vertical: "middle",
-              horizontal: "center",
-              wrapText: true,
-            };
-          });
-          newRow.height = 88;
+          xlsx.mergeCells(worksheet, `${mergeCells.split(":")[0] + newRow.number}`, `${mergeCells.split(":")[1] + newRow.number}`);
+          xlsx.setBorderLine(worksheet, newRow);
+          xlsx.setRowAlign(worksheet, newRow, "center");
+          xlsx.setHeight(newRow, 88);
         }
       }
-    };
 
-    let footer_config = [
-      {
-        title: "특이사항",
-        bgColor: "FFD3D3D3",
-        rowCount: "2",
-        mergeCells: "A:F",
-      },
-      {
-        title: "고객의견",
-        bgColor: "FFD3D3D3",
-        rowCount: "2",
-        mergeCells: "A:F",
-      },
-      {
-        title:
-          "위와 같은 시스템 정밀점검을 실시하였음을 확인 합니다.  \n\n     년     월      일",
-        bgColor: "FFFFFFFF",
-        rowCount: "1",
-        mergeCells: "A:F",
-      },
-      {
-        title: "고객사 담당자:       (인)",
-        bgColor: "FFFFFFFF",
-        rowCount: "1",
-        mergeCells: "A:D",
-        subColumn: {
-          title: "점검자 :      (인)",
-          bgColor: "FFFFFFFF",
-          rowCount: "1",
-          mergeCells: "E:F",
-        },
-      },
-    ];
-
-    for (value of footer_config) {
-      await addFooterRow(value);
-
-      let newRow = await worksheet.addRow([value.title]);
-      let merge = mergeCells
-      ? `${mergeCells.split(":")[0] + number}:${
-          mergeCells.split(":")[1] + number
-        }`
-      : `A${number}`;
     }
+
   }
 
   const filename = await utils.getFilename();
