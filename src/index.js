@@ -7,7 +7,7 @@ module.exports = async (type, outputFormat) => {
     const outputRun  = require(`${__dirname}/${outputFormat}`);
     const inspection_result = {}
 
-    // 점검 명령어 실행 로직
+    // 점검 명령어 실행 로직 (공통).
     //["CPU", "SERVICE_STATUS", "DISK_STATUS", "LOGS"]
     for (category of Object.keys(inspection_list)) {
       const commands = inspection_list[category];

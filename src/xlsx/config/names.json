@@ -1,6 +1,0 @@
-{
-    "CPU" : "CPU 상태 점검",
-    "SERVICE_STATUS" : "Service 상태 점검",
-    "DISK_STATUS" : "Disk 상태 점검",
-    "LOGS" : "Log 상태 점검"
-}

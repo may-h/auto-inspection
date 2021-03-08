@@ -2,9 +2,9 @@ const chalk = require("chalk");
 
 module.exports = async (inspection_result) => {
 
-    console.log(chalk.blue.bold(`[CONSOLE] Print Inspection Output `));
+    console.log(chalk.blue.bold(`[CONSOLE] Inspection Output \n`));
     
-    //터미널 콘솔 출력. 
+    //터미널 콘솔에 결과 출력. 
     for (category of Object.keys(inspection_result)) {
         const commands = inspection_result[category];
         console.log(chalk.blue(`[${category}]`));
