@@ -12,23 +12,25 @@ module.exports = async (inspection_result) => {
 
   Promise.resolve()
   .then(async () => {
-      // header를 넣을 건지 질문.
+      // Header
       let ynHeader = await common.ynChoice("파일에 Header를 추가하시겠습니까?");
       if (ynHeader) {
         return require("./header")(worksheet);
       }
     })
     .then(() => {
+      // Body
       return require("./body")(worksheet, inspection_result);
     })
     .then(async () => {
-      // Footer을 추가할 것인지 질문.
+      // Footer
       let ynFooter = await common.ynChoice("파일에 Footer을 추가하시겠습니까?");
       if (ynFooter) {
         return require("./footer")(worksheet);
       }
     })
     .then(async() => {
+      // File save
       const filename = await utils.getFilename();
       await workbook.xlsx.writeFile(`${approot}/output/${filename}.xlsx`);
     })
