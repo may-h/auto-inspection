@@ -11,13 +11,15 @@ module.exports = {
     return response.stdout;
   },
   shellCd: async (path) => {
-    console.log(path);
-    const response = await shell.cd(path);
-    if (response.code !== 0) {
-      return false;
+    try {
+      const response = await shell.cd(path);
+      if (response.code !== 0) {
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.log("ERROR -> ", error);
     }
-    console.log(response.stderr);
-    return true;
   },
   getFilename: async () => {
     try {

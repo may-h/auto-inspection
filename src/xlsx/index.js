@@ -35,6 +35,6 @@ module.exports = async (inspection_result) => {
       await workbook.xlsx.writeFile(`${approot}/output/${filename}.xlsx`);
     })
     .catch((err) => {
-      console.log('[ERROR] ', err.toString());
+      console.log('[ERROR] ', err);
     });
 };

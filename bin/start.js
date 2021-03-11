@@ -60,9 +60,6 @@ program.option('-s, --start').action(async () => {
     
     if (outputFormat === '[Exit]') checkProcessExit('exit');
 
-
-    console.log('your type : ', type, ' your format : ', outputFormat);
-
     run(type,outputFormat);
     
 
