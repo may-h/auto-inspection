@@ -1,0 +1,119 @@
+#!/bin/sh
+
+# set directory
+SCRIPT=$0
+APP_ROOT=`dirname "$SCRIPT"`
+APP_ROOT=`cd "$APP_ROOT/.."; pwd`
+
+# set script path 
+NODE_SCRIPT_PATH=$APP_ROOT/src/index.js
+
+function shell_inspection() 
+{
+	# include environment
+	source env.sh
+
+	echo "What Is The Type ?"
+	select type in "검색엔진" "챗봇엔진" "추천엔진" "Exit"
+	do
+		case ${type} in
+			검색엔진)
+				filePath=search.commands break
+				;;
+			챗봇엔진)
+				filePath=chatbot.commands break
+				;;
+			추천엔진)
+				filePath=recommend.commands break
+				;;
+			Exit|*)
+				echo Good Bye
+				exit 1
+		esac
+	done
+
+	echo '==================== INSPECTION START ======================='
+	while read line
+	do
+		IFS='=' eval 'array=($line)'
+		NAME=$(echo ${array[0]} | tr -d ' ')
+
+		if [ "$NAME" == "name" ]; then
+			echo "[${array[1]}]"
+
+		elif [ "$NAME" == "command" ]; then
+			if [ ! -z ${array[2]} ]; then # IFS에서 구분자 "="가 잘려 명령어가 잘린 경우를 대비해 추가. 
+				eval ${array[1]}=${array[2]}
+			else
+				eval ${array[1]}
+			fi
+		elif [ "$NAME" == "{" ] || [ "$NAME" == "}" ]; then
+			echo -e '\n'
+		fi
+	done < $filePath
+}
+
+
+
+# command choice 
+case $1 in
+start) 
+	echo "Select Running Language ?"
+	select type in "node.js" "shell" "exit"
+	do
+		case ${type} in
+			node.js)
+				echo 'start inspection ...'
+				eval node $NODE_SCRIPT_PATH
+				break
+				;;
+
+			shell)
+				# check 'env.sh' file existing 
+				if [ ! -f "env.sh" ]; then 
+					echo "Not found 'env.sh' file, Try command first: ./inspection init"
+					exit
+				fi
+				eval shell_inspection
+				break
+				;;
+
+			exit|*)
+				echo Good Bye
+				exit 1
+		esac
+	done
+	;;
+
+init) 
+	echo "Input Below Information For Running."
+	echo "1)  ELASTICSEARCH_PORT : (ex: 9200) "
+	read  elasticsearch_port
+	ELASTICSEARCH_PORT="$elasticsearch_port"
+
+	echo "2)  ELASTICSEARCH_DATA_PATH : (ex: /home/ibricks/elasticsearch-6.5.4/data) "
+	read  elasticsearch_data_path
+	ELASTICSEARCH_DATA_PATH=$elasticsearch_data_path
+
+	echo "3)  OPENQUERY_PATH : (ex: /home/ibricks/openquery-management-console)"
+	echo "This is needed only for search inspection"
+	read  openquery_path
+	OPENQUERY_PATH=$openquery_path
+
+	echo "export ELASTICSEARCH_PORT="$ELASTICSEARCH_PORT >> ./env.sh
+	echo "export ELASTICSEARCH_DATA_PATH="$ELASTICSEARCH_DATA_PATH >> ./env.sh
+	echo "export OPENQUERY_PATH="$OPENQUERY_PATH >> ./env.sh
+	;;
+
+*)
+	echo ' usage: '$0' [command]'
+	echo ''
+	echo ' command:'
+	echo '   init                Create "env.sh" file' 
+	echo '   start               Start Inspection : node.js, shell'
+	echo ''
+    ;;
+esac
+
+
+

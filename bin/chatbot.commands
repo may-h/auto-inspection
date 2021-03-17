@@ -8,20 +8,28 @@
 }
 {
     name=Elasticsearch 상태 확인
-    command=curl localhost:9200
+    command=ps -ef | grep elasticsearch | grep -v 'grep'
 }
 {
     name=Elasticsearch Cluster 상태 확인
     command=curl localhost:$ELASTICSEARCH_PORT/_cluster/health?pretty
 }
 {
-    name=데이터 색인 상태 확인
-    command=curl localhost:$ELASTICSEARCH_PORT/_cat/indices?s=i:desc
+    name=NLU 상태 확인
+    command=ps -ef | grep nlu
 }
 {
-    name=OpenQuery 상태 확인
+    name=챗봇 서비스 상태 확인
+    command=pm2 list
+}
+{
+    name=Redis 상태 확인
+    command=ps -ef | grep redis
+}
+{
+    name=데이터 색인 상태 확인
     command=cd $OPENQUERY_PATH/bin
-    command=./console list
+    command=curl localhost:$ELASTICSEARCH_PORT/_cat/indices?s=i:desc
 }
 {
     name=시스템 디스크 용량 확인

@@ -1,33 +1,69 @@
+const program = require('commander');
+const inquirer = require('inquirer');
+const chalk = require('chalk');
 const approot = require('app-root-path');
-const util = require(`${approot.path}/utils`)
+const package = require(`${approot}/package.json`);
+const run = require('./run');
 
-module.exports = async (type, outputFormat) => {
-  try {
-    const inspection_list = require(`${approot.path}/config/commands/${type}`);
-    const outputRun  = require(`${__dirname}/${outputFormat}`);
-    const inspection_result = {}
-
-    // 점검 명령어 실행 로직 (공통).
-    //["CPU", "SERVICE_STATUS", "DISK_STATUS", "LOGS"]
-    for (category of Object.keys(inspection_list)) {
-      const commands = inspection_list[category];
-      inspection_result[category] = []
-      for (command of commands) {
-          if(command.path) {
-              let result = await util.shellCd(command.path);
-              if(!result) {
-                  command.response = `no directory : ${command.path}`;
-              }
-          };
-          command.response = command.response || (await util.shellExec(command.command,  {silent:true}));
-          inspection_result[category].push(command);
-      }
-    };
-
-    //선택한 output Format으로 출력
-    await outputRun(inspection_result)
-
-  } catch (err) {
-    console.log("ERROR -> ", err.message );
+const checkProcessExit = (str) => {
+  str = str.replace(/[^A-Za-z]/gi, '');
+  if (str.toLowerCase() === 'end' || str.toLowerCase() === 'exit' || str.toLowerCase() === 'e') {
+    console.log(chalk.green('\n  [Process] Process Exit\n'));
+    process.exit(0);
+    // 'back' 키워드도 동시에 체크
+  } else if (str.toLowerCase() === 'back' || str.toLowerCase() === 'b') {
+    return true;
   }
-};
+  return false;
+}
+
+program.description(package.description).version(package.version, '-v, --version').usage('[option]');
+
+// Commands
+program.option('-s, --start').action(async () => {
+  let proceed = true;
+
+  while (proceed) {
+    proceed = false;
+
+    // Select Inspection Type 
+    let { type } = await inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Select the type of inspection',
+        name: 'type',
+        choices: [
+          'search',
+          'chatbot',
+          // 'recommand', //추천 보류 
+          '[Exit]'
+        ],
+      },
+    ]);
+
+    if (type === '[Exit]') checkProcessExit('exit');
+
+    // Select Output Type 
+    let { outputFormat } = await inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Select the format type of result',
+        name: 'outputFormat',
+        choices: [
+          'json', 
+          'xlsx', 
+          'console', 
+          '[Exit]'
+        ],
+      },
+    ]);
+    
+    if (outputFormat === '[Exit]') checkProcessExit('exit');
+
+    run(type,outputFormat);
+    
+
+  }
+});
+
+program.parse(program.argv);
