@@ -30,12 +30,14 @@ module.exports = {
       bgColor: "FFD3D3D3",
       rowCount: "2",
       mergeCells: "A:F",
+      height: 20
     },
     {
       title: "고객의견",
       bgColor: "FFD3D3D3",
       rowCount: "2",
       mergeCells: "A:F",
+      height: 20
     },
     {
       title:
@@ -43,12 +45,14 @@ module.exports = {
       bgColor: "FFFFFFFF",
       rowCount: "1",
       mergeCells: "A:F",
+      height: 50
     },
     {
       title: "고객사 담당자:       (인)",
       bgColor: "FFFFFFFF",
       rowCount: "1",
       mergeCells: "A:D",
+      height: 40,
       subColumn: {
         title: "점검자 :      (인)",
         bgColor: "FFFFFFFF",
