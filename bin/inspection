@@ -11,7 +11,7 @@ NODE_SCRIPT_PATH=$APP_ROOT/src/index.js
 function shell_inspection() 
 {
 	# include environment
-	source env.sh
+	source ./env.sh
 
 	echo "What Is The Type ?"
 	select type in "검색엔진" "챗봇엔진" "추천엔진" "Exit"
