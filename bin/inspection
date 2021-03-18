@@ -14,7 +14,7 @@ function shell_inspection()
 	source ./env.sh
 
 	echo "What Is The Type ?"
-	select type in "검색엔진" "챗봇엔진" "추천엔진" "Exit"
+	select type in "검색엔진" "챗봇엔진" "Exit"
 	do
 		case ${type} in
 			검색엔진)
@@ -23,9 +23,9 @@ function shell_inspection()
 			챗봇엔진)
 				filePath=chatbot.commands break
 				;;
-			추천엔진)
-				filePath=recommend.commands break
-				;;
+			#추천엔진) # 보류 
+			#	filePath=recommend.commands break
+			#	;;
 			Exit|*)
 				echo Good Bye
 				exit 1
